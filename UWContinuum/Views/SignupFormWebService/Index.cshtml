@@ -1,0 +1,108 @@
+﻿@model UWContinuum.Models.WebEmailsDTOModel
+@{
+    ViewData["Title"] = "Sign up for Program Updates";   
+}
+@section HeadContent {
+    <meta name="description" content="Learn about new programs at the UW Continuum College here."/>
+    <!--Other meta tags and page-specific head content can go here -->
+}
+    <div class="row">
+        <h1>Sign Up to Receive Program Updates</h1>
+        <p class="mt-3 h5">Interested in learning about new program offerings from UW Continuum College? Please fill out the form below to receive occassional updates from us. </p>
+        <p>Fields marked in <strong>bold</strong> are required.</p>
+    </div>
+    
+    <div class="row">
+        <div class="col-12 col-lg-6 bg-light p-3 rounded rounded-3">
+            <form method="post"  id="signupForm" >
+
+                <div id="formMessage" role="alert" class="mb-3 alert @ViewData["MessageClass"]"
+                    @(String.IsNullOrEmpty(ViewData["Message"]?.ToString()) ? "style=display:none;" : "")
+                >
+                    @ViewData["Message"]
+                </div>
+                
+                
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label fw-bold"></label>
+                    <input asp-for="FirstName" class="form-control" required onchange="capitalizeFirstCharacter();" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="LastName" class="control-label fw-bold"></label>
+                    <input asp-for="LastName" class="form-control" required onchange="capitalizeFirstCharacter();" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="EmailAddress" class="control-label fw-bold"></label>
+                    <input asp-for="EmailAddress" class="form-control" required />
+                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="EmailAddressVerify" class="control-label fw-bold"></label>
+                    <input asp-for="EmailAddressVerify" class="form-control" required />
+                    <span asp-validation-for="EmailAddressVerify" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            <div class="form-group form-check mt-3">
+                    <input asp-for="HasOptedIn" class="form-check-input form-control p-0" required title="Please opt in to submit this form"/>
+                    <label asp-for="HasOptedIn" class="form-check-label control-label fw-bold"></label>
+                    <br />
+                    <span asp-validation-for="HasOptedIn" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg mr-8">Click to Subscribe</button> &nbsp;&nbsp; 
+                    <button type="reset" class="btn btn-link text-dark" onclick="clearForm();">Clear Form</button>
+                </div>
+        
+            </form>
+        </div>
+        <div class="col-12 col-lg-6" style="height:720px;background:url('images/uw-seattle.webp'); background-size:cover;" />
+        
+    </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        window.addEventListener("load", () => {
+            //focus on first empty field
+            $('#signupForm input[required][value=""]').first().focus();            
+            //hide success message if it is displaying
+            if ($("#formMessage.alert-success").length) {
+                setTimeout(() => {
+                    $("#formMessage").hide("slow")
+                }, 3000);
+            }
+        });
+
+        //capitalize first letter in each word
+        function capitalizeFirstCharacter() {
+            var val = event.target.value;
+            var arrs = val.split(/([-\' ])+/);
+            var str = "";
+            arrs.forEach(arr => {
+                str += arr.charAt(0).toUpperCase() + arr.slice(1);
+            });
+            event.target.value = str;
+        }
+
+        //reset form fields 
+        function clearForm() {
+            $("span.field-validation-error").empty();
+            $("#formMessage").html("").hide().removeClass("alert-success alert-danger");
+            $("#signupForm").validate().resetForm();
+            document.getElementById("signupForm").reset();
+            $("#signupForm input[type=text], #signupForm input[type=email], #signupForm input[type=tel]").attr("value", "");
+            $("#signupForm input[type=checkbox]").prop("checked", false);
+            $('#signupForm input[required][value=""]').first().focus();       
+        }
+
+    </script>
+    
+}
+  
+    
+

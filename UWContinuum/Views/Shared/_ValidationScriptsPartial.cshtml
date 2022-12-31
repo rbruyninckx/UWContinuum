@@ -1,0 +1,42 @@
+﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    //client side form validation
+    $(function() {
+        //jquery validate unobtrusive rules and messages
+        $("#signupForm").validate({          
+            
+            //rules to specify on the form
+            rules: {
+                "FirstName": "required",
+                "LastName": "required",
+                "HasOptedIn": { 
+                    required: true 
+                },
+                "EmailAddress": {
+                    required: true,
+                    email: true
+                },
+                "EmailAddressVerify": {
+                    required: true,                      
+                    equalTo: "#EmailAddress" //for checking both email are same or not
+                }             
+            },
+            //error messages to display
+            messages: {
+                "FirstName": " Please enter your First Name",
+                "LastName": " Please enter your Last Name",
+                "HasOptedIn": {
+                    required: " Please opt in to submit this form"
+                },
+                "EmailAddress": {
+                    required: " Please enter your Email Address"
+                },
+                "EmailAddressVerify": {
+                    required: " Please re-enter your Email Address",
+                    equalTo: " Please enter the same Email Address as above"
+                }
+            }
+        });
+    });
+</script>
